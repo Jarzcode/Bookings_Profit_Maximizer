@@ -1,0 +1,7 @@
+public_controllers:
+  resource: '../../app/Public/Controller/'
+  type: annotation
+  prefix: /public
+  name_prefix: 'public.'
+  defaults:
+    _format: 'json'
