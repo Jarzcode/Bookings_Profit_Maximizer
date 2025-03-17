@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Booking\Controller\Stats;
 
 use App\Booking\Exception\MissingFieldException;
+use SFL\Booking\Stat\Application\Query\GetCalculatedProfitStats;
 use SFL\Shared\Infrastructure\Symfony\Controller\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ final class StatsBookingController extends ApiController
         $this->validateRequest($request);
 
         $statsView = $this->ask(
-            new GetProfitStatistics($request->request->all())
+            new GetCalculatedProfitStats($request->toArray())
         );
 
         return new JsonResponse($statsView);
