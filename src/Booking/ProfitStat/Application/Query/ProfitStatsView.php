@@ -10,8 +10,8 @@ final class ProfitStatsView implements View
 {
     public function __construct(
         public float $avg_night,
-        public int $min_night,
-        public int $max_night,
+        public float $min_night,
+        public float $max_night,
     ) {
     }
 }

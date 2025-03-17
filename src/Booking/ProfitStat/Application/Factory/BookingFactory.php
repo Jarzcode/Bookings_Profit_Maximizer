@@ -19,6 +19,7 @@ final class BookingFactory
             requestId: RequestId::fromString($bookingDto->requestId),
             checkIn: CheckInDate::fromString($bookingDto->checkIn),
             nights: Nights::fromInt($bookingDto->nights),
+            sellingRate: Margin::fromInt($bookingDto->sellingRate),
             margin: Margin::fromInt($bookingDto->margin),
         );
     }
