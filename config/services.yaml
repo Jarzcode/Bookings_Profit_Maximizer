@@ -29,6 +29,10 @@ services:
         resource: '../app/Public/Controller/Api/*'
         tags: ['controller.service_arguments']
 
+    App\Booking\Controller\Stats\:
+        resource: '../app/Booking/Controller/Stats/*'
+        tags: [ 'controller.service_arguments' ]
+
     SFL\Shared\Infrastructure\Bus\Event\InMemorySymfonyEventBus:
         arguments:
             $subscribers: !tagged_iterator domain_event_subscriber
