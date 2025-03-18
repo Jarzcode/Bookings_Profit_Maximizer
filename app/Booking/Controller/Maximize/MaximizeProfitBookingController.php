@@ -2,24 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Booking\Controller\Stats;
+namespace App\Booking\Controller\Maximize;
 
 use App\Booking\Exception\MissingFieldException;
 use SFL\Booking\ProfitStat\Application\Query\Dto\BookingDto;
-use SFL\Booking\ProfitStat\Application\Query\GetCalculatedProfitStats;
 use SFL\Shared\Infrastructure\Symfony\Controller\ApiController;
 use SFL\Shared\Infrastructure\Symfony\Controller\ThirdPartiesRequestValidationTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class StatsBookingController extends ApiController
+final class MaximizeProfitBookingController extends ApiController
 {
     use ThirdPartiesRequestValidationTrait;
 
     #[Route(
-        path: 'stats',
-        name: 'booking.stats',
+        path: 'maximize',
+        name: 'booking.maximize',
         methods: ['POST'],
     )]
     public function __invoke(Request $request): JsonResponse
@@ -27,7 +26,7 @@ final class StatsBookingController extends ApiController
         self::validateHasAllMandatoryFields($request);
 
         $statsView = $this->ask(
-            new GetCalculatedProfitStats(
+            new GetMaximizedProfitStats(
                 $this->requestDataToDtosList($request),
             )
         );
