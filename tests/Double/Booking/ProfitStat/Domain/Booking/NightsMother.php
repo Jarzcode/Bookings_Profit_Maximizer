@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Double\Booking\Domain\Booking;
+namespace Tests\Double\Booking\ProfitStat\Domain\Booking;
 
 use SFL\Booking\ProfitStat\Domain\Booking\Nights;
 use Tests\Double\Shared\NumberMother;

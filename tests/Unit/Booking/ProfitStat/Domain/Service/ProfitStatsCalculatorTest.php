@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Booking\ProfitStat\Domain\Service;
 
-use SFL\Booking\ProfitStat\Domain\Booking\Booking;
-use SFL\Booking\ProfitStat\Domain\Booking\SellingRate;
 use SFL\Booking\ProfitStat\Domain\Service\ProfitStatsCalculator;
-use Tests\Double\Booking\Domain\Booking\BookingMother;
-use Tests\Double\Booking\Domain\Booking\MarginMother;
-use Tests\Double\Booking\Domain\Booking\NightsMother;
-use Tests\Double\Booking\Domain\Booking\SellingRateMother;
+use Tests\Double\Booking\ProfitStat\Domain\Booking\BookingMother;
+use Tests\Double\Booking\ProfitStat\Domain\Booking\MarginMother;
+use Tests\Double\Booking\ProfitStat\Domain\Booking\NightsMother;
+use Tests\Double\Booking\ProfitStat\Domain\Booking\SellingRateMother;
 use Tests\Shared\Infrastructure\PhpUnit\UnitTestCase;
 
 final class ProfitStatsCalculatorTest extends UnitTestCase
@@ -35,7 +33,7 @@ final class ProfitStatsCalculatorTest extends UnitTestCase
             ),
         ];
 
-        $this->service::invoke($bookings);
+        $this->service->invoke($bookings);
     }
 
     public function test_should_calculate_the_profit_stats(): void
@@ -53,7 +51,7 @@ final class ProfitStatsCalculatorTest extends UnitTestCase
             ),
         ];
 
-        $profitStats = $this->service::invoke($bookings);
+        $profitStats = $this->service->invoke($bookings);
 
         $this->assertEquals(8.29, $profitStats->average()->value());
         $this->assertEquals(8, $profitStats->minProfit()->value());

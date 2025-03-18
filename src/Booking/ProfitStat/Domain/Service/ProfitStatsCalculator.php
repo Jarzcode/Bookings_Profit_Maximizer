@@ -13,7 +13,7 @@ use SFL\Booking\ProfitStat\Domain\ProfitStat\ProfitStat;
 final class ProfitStatsCalculator
 {
     /** @param list<Booking> $bookings */
-    public static function invoke(array $bookings): ProfitStat
+    public function invoke(array $bookings): ProfitStat
     {
         $totalProfit = 0;
         $minProfit = PHP_INT_MAX;
