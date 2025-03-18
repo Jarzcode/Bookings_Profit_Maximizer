@@ -9,7 +9,7 @@ use SFL\Shared\Domain\ValueObject\StringValueObject;
 
 final class RequestId extends StringValueObject
 {
-    private function __construct(string $value)
+    public function __construct(string $value)
     {
         $this->ensureIsNotEmpty($value);
         $this->value = $value;

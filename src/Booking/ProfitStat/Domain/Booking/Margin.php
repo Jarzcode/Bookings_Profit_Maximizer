@@ -9,7 +9,7 @@ use SFL\Shared\Domain\ValueObject\IntValueObject;
 
 final class Margin extends IntValueObject
 {
-    private function __construct(int $value)
+    public function __construct(int $value)
     {
         $this->ensureIsValidPercentage($value);
         $this->value = $value;

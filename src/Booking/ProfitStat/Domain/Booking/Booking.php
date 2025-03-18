@@ -12,7 +12,7 @@ final class Booking extends AggregateRoot
         private readonly RequestId $requestId,
         private readonly CheckInDate $checkIn,
         private readonly Nights $nights,
-        private readonly Margin $sellingRate,
+        private readonly SellingRate $sellingRate,
         private readonly Margin $margin
     ) {
     }
@@ -25,11 +25,11 @@ final class Booking extends AggregateRoot
         Margin $margin
     ): self {
         return new self(
-            $requestId,
-            $checkIn,
-            $nights,
-            $sellingRate,
-            $margin
+            requestId: $requestId,
+            checkIn: $checkIn,
+            nights: $nights,
+            sellingRate: $sellingRate,
+            margin: $margin
         );
     }
 
@@ -48,7 +48,7 @@ final class Booking extends AggregateRoot
         return $this->nights;
     }
 
-    public function sellingRate(): Margin
+    public function sellingRate(): SellingRate
     {
         return $this->sellingRate;
     }

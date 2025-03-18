@@ -9,7 +9,7 @@ use SFL\Shared\Domain\ValueObject\IntValueObject;
 
 final class SellingRate extends IntValueObject
 {
-    private function __construct(int $value)
+    public function __construct(int $value)
     {
         $this->ensureIsPositive($value);
         $this->value = $value;

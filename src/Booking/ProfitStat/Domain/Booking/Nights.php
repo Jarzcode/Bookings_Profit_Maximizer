@@ -11,7 +11,7 @@ final class Nights extends IntValueObject
 {
     const MAX_LIMIT_NIGHTS = 100;
 
-    private function __construct(int $value)
+    public function __construct(int $value)
     {
         $this->ensureIsPositive($value);
         $this->ensureIsWithinLimit($value);

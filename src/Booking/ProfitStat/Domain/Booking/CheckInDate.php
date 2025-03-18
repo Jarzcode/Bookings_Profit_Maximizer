@@ -10,7 +10,7 @@ use SFL\Shared\Domain\ValueObject\DateTimeValueObject;
 
 final class CheckInDate extends DateTimeValueObject
 {
-    private function __construct(DateTimeImmutable $value)
+    public function __construct(DateTimeImmutable $value)
     {
         $this->ensureIsNotPast($value);
         $this->value = $value;
