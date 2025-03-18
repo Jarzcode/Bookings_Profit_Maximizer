@@ -6,7 +6,7 @@ namespace SFL\Booking\ProfitStat\Application\Query\Dto;
 
 final class BookingDto
 {
-    private function __construct(
+    public function __construct(
         public string $requestId,
         public string $checkIn,
         public int $nights,

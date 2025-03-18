@@ -10,7 +10,7 @@ use SFL\Booking\ProfitStat\Domain\ProfitStat\MaxProfit;
 use SFL\Booking\ProfitStat\Domain\ProfitStat\MinProfit;
 use SFL\Booking\ProfitStat\Domain\ProfitStat\ProfitStat;
 
-final class ProfitStatsCalculator
+class ProfitStatsCalculator
 {
     /** @param list<Booking> $bookings */
     public function invoke(array $bookings): ProfitStat

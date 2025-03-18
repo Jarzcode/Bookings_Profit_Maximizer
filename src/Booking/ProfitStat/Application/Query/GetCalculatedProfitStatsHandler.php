@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SFL\Booking\ProfitStat\Application\Query;
 
+use InvalidArgumentException;
 use SFL\Booking\ProfitStat\Application\Factory\BookingFactory;
 use SFL\Booking\ProfitStat\Application\Query\Dto\BookingDto;
 use SFL\Booking\ProfitStat\Domain\Booking\Booking;
@@ -20,6 +21,11 @@ final class GetCalculatedProfitStatsHandler implements QueryHandler
 
     public function __invoke(GetCalculatedProfitStats $query): ProfitStatsView
     {
+        if (empty($query->bookingsList)) {
+            //TODO: throw custom exception
+            throw new InvalidArgumentException('Bookings list cannot be empty');
+        }
+
         $bookings = array_map(
             static fn(BookingDto $bookingDto): Booking => BookingFactory::invoke($bookingDto),
             $query->bookingsList,

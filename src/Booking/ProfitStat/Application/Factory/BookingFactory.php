@@ -10,6 +10,7 @@ use SFL\Booking\ProfitStat\Domain\Booking\CheckInDate;
 use SFL\Booking\ProfitStat\Domain\Booking\Margin;
 use SFL\Booking\ProfitStat\Domain\Booking\Nights;
 use SFL\Booking\ProfitStat\Domain\Booking\RequestId;
+use SFL\Booking\ProfitStat\Domain\Booking\SellingRate;
 
 final class BookingFactory
 {
@@ -19,7 +20,7 @@ final class BookingFactory
             requestId: RequestId::fromString($bookingDto->requestId),
             checkIn: CheckInDate::fromString($bookingDto->checkIn),
             nights: Nights::fromInt($bookingDto->nights),
-            sellingRate: Margin::fromInt($bookingDto->sellingRate),
+            sellingRate: SellingRate::fromInt($bookingDto->sellingRate),
             margin: Margin::fromInt($bookingDto->margin),
         );
     }
