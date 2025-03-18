@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Booking\Controller\Stats;
 
 use App\Booking\Exception\MissingFieldException;
+use SFL\Booking\ProfitStat\Application\Query\Dto\BookingDto;
 use SFL\Booking\ProfitStat\Application\Query\GetCalculatedProfitStats;
 use SFL\Shared\Infrastructure\Symfony\Controller\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,9 @@ final class StatsBookingController extends ApiController
         $this->validateRequest($request);
 
         $statsView = $this->ask(
-            new GetCalculatedProfitStats($request->toArray())
+            new GetCalculatedProfitStats(
+                $this->requestDataToDtosList($request),
+            )
         );
 
         return new JsonResponse($statsView);
@@ -32,6 +35,15 @@ final class StatsBookingController extends ApiController
     protected function exceptions(): array
     {
         return [MissingFieldException::class => 400];
+    }
+
+    /**  @return BookingDto[] */
+    private function requestDataToDtosList(Request $request): array
+    {
+        return array_map(
+            static fn(array $bookingData): BookingDto => BookingDto::fromArray($bookingData),
+            $request->toArray(),
+        );
     }
 
     private function validateRequest(Request $request): void
