@@ -9,7 +9,7 @@ use SFL\Shared\Domain\ValueObject\IntValueObject;
 
 final class Nights extends IntValueObject
 {
-    const MAX_LIMIT_NIGHTS = 100;
+    private const MAX_LIMIT_NIGHTS = 100;
 
     public function __construct(int $value)
     {
