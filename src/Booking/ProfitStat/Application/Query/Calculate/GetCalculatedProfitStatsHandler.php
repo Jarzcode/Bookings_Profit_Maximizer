@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SFL\Booking\ProfitStat\Application\Query;
+namespace SFL\Booking\ProfitStat\Application\Query\Calculate;
 
 use InvalidArgumentException;
 use SFL\Booking\ProfitStat\Application\Factory\BookingFactory;

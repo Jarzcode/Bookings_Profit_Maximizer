@@ -6,7 +6,7 @@ namespace App\Booking\Controller\Stats;
 
 use App\Booking\Exception\MissingFieldException;
 use SFL\Booking\ProfitStat\Application\Query\Dto\BookingDto;
-use SFL\Booking\ProfitStat\Application\Query\GetCalculatedProfitStats;
+use SFL\Booking\ProfitStat\Application\Query\Calculate\GetCalculatedProfitStats;
 use SFL\Shared\Infrastructure\Symfony\Controller\ApiController;
 use SFL\Shared\Infrastructure\Symfony\Controller\ThirdPartiesRequestValidationTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;

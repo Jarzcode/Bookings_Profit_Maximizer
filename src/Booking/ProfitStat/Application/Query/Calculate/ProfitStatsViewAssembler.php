@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SFL\Booking\ProfitStat\Application\Query;
+namespace SFL\Booking\ProfitStat\Application\Query\Calculate;
 
 use SFL\Booking\ProfitStat\Domain\ProfitStat\ProfitStat;
 use SFL\Shared\Application\Query\ViewAssembler;

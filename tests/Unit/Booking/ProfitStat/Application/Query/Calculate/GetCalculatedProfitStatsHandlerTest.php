@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Booking\ProfitStat\Application\Query;
+namespace Tests\Unit\Booking\ProfitStat\Application\Query\Calculate;
 
 use InvalidArgumentException;
-use SFL\Booking\ProfitStat\Application\Query\GetCalculatedProfitStats;
-use SFL\Booking\ProfitStat\Application\Query\GetCalculatedProfitStatsHandler;
-use SFL\Booking\ProfitStat\Application\Query\ProfitStatsView;
-use SFL\Booking\ProfitStat\Application\Query\ProfitStatsViewAssembler;
+use SFL\Booking\ProfitStat\Application\Query\Calculate\GetCalculatedProfitStats;
+use SFL\Booking\ProfitStat\Application\Query\Calculate\GetCalculatedProfitStatsHandler;
+use SFL\Booking\ProfitStat\Application\Query\Calculate\ProfitStatsView;
+use SFL\Booking\ProfitStat\Application\Query\Calculate\ProfitStatsViewAssembler;
 use SFL\Booking\ProfitStat\Domain\Service\ProfitStatsCalculator;
 use Tests\Double\Booking\ProfitStat\Application\Query\Dto\BookingDtoMother;
 use Tests\Double\Booking\ProfitStat\Domain\ProfitStat\ProfitStatMother;
