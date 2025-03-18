@@ -6,6 +6,7 @@ namespace App\Booking\Controller\Maximize;
 
 use App\Booking\Exception\MissingFieldException;
 use SFL\Booking\ProfitStat\Application\Query\Dto\BookingDto;
+use SFL\Booking\ProfitStat\Application\Query\Maximize\GetMaximizedProfitStats;
 use SFL\Shared\Infrastructure\Symfony\Controller\ApiController;
 use SFL\Shared\Infrastructure\Symfony\Controller\ThirdPartiesRequestValidationTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,13 +26,13 @@ final class MaximizeProfitBookingController extends ApiController
     {
         self::validateHasAllMandatoryFields($request);
 
-        $statsView = $this->ask(
+        $maximizedProfitStats = $this->ask(
             new GetMaximizedProfitStats(
                 $this->requestDataToDtosList($request),
             )
         );
 
-        return new JsonResponse($statsView);
+        return new JsonResponse($maximizedProfitStats);
     }
 
     protected function exceptions(): array
