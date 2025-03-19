@@ -9,13 +9,14 @@ use SFL\Booking\ProfitStat\Application\Factory\BookingFactory;
 use SFL\Booking\ProfitStat\Application\Query\Dto\BookingDto;
 use SFL\Booking\ProfitStat\Domain\Booking\Booking;
 use SFL\Booking\ProfitStat\Domain\Service\MaximizedProfitStatsCalculator;
+use SFL\Booking\ProfitStat\Domain\Service\ProfitStatsCalculator;
 use SFL\Shared\Domain\Bus\Query\QueryHandler;
 
 final class GetMaximizedProfitStatsHandler implements QueryHandler
 {
     public function __construct(
         private readonly MaximizedProfitStatsViewAssembler $assembler,
-        private readonly MaximizedProfitStatsCalculator $maximizedProfitStatsCalculator
+        private readonly MaximizedProfitStatsCalculator $maximizedProfitStatsCalculator,
     ) {
     }
 

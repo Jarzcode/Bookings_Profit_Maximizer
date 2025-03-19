@@ -11,6 +11,7 @@ use SFL\Booking\ProfitStat\Domain\ProfitStat\Average;
 use SFL\Booking\ProfitStat\Domain\ProfitStat\MaxProfit;
 use SFL\Booking\ProfitStat\Domain\ProfitStat\MinProfit;
 use SFL\Booking\ProfitStat\Domain\ProfitStat\ProfitStat;
+use SFL\Booking\ProfitStat\Domain\ProfitStat\TotalProfit;
 
 class MaximizedProfitStatsCalculator
 {
@@ -28,27 +29,30 @@ class MaximizedProfitStatsCalculator
         // Step 2: Apply Dijkstra's algorithm (inverse) to find the path with the maximum profit
         list($bestCombination, $totalProfit) = $this->graphPathFinder->invoke($graph);
 
-        return [
+        /*return [
             array_map(
                 static fn(string $id) => RequestId::fromString($id),
                 array_reverse($bestCombination),
             ),
-            ProfitStat::create(
-                Average::fromFloat((float) $totalProfit),
-                MinProfit::fromFloat(1.0),
-                MaxProfit::fromFloat(1.0),
-            ),
-        ];
+            $totalProfit,
+        ];*/
 
         // Step 3: Calculate average, min, and max profit per night
-        $totalNights = 0;
         $profitsPerNight = [];
         foreach ($bestCombination as $id) {
-            $booking = $bookings[$id];
-            $nights = $booking['nights'];
-            $profit = $this->calculateProfit($booking);
+            $selectedBooking = null;
+
+            /** @var Booking $selectedBooking */
+            $selectedBooking = current(
+                array_filter(
+                    $bookings,
+                    fn($booking) => $booking->requestId()->value() === $id
+                )
+            );
+
+            $nights = $selectedBooking->nights()->value();
+            $profit = $this->calculateProfit($selectedBooking);
             $profitsPerNight[] = $profit / $nights;
-            $totalNights += $nights;
         }
 
         $avgNight = array_sum($profitsPerNight) / count($profitsPerNight);
@@ -57,12 +61,16 @@ class MaximizedProfitStatsCalculator
 
         // Step 4: Return result
         return [
-            'requestIds' => array_reverse($bestCombination),
-            'maximizedProfitStats' => ProfitStat::create(Average::fromFloat($avgNight), $minNight, $maxNight),
-            'total_profit' => $totalProfit,
-            'avg_night' => $avgNight,
-            'min_night' => $minNight,
-            'max_night' => $maxNight
+            array_map(
+                static fn(string $id) => RequestId::fromString($id),
+                $bestCombination,
+            ),
+            ProfitStat::create(
+                Average::fromFloat($avgNight),
+                MinProfit::fromFloat($minNight),
+                MaxProfit::fromFloat($maxNight),
+                TotalProfit::fromFloat($totalProfit),
+            ),
         ];
     }
 

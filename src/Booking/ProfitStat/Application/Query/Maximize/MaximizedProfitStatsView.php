@@ -12,7 +12,10 @@ final class MaximizedProfitStatsView implements View
     /** @param list<string> $requestIds */
     public function __construct(
         public array $requestIds,
-        public ProfitStatsView $profitStatsView,
+        public ?float $totalProfit,
+        public float $avg_night,
+        public float $min_night,
+        public float $max_night,
     ) {
     }
 }

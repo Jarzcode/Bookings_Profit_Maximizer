@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Booking\ProfitStat\Application\Query\Maximize;
 
 use InvalidArgumentException;
-use SFL\Booking\ProfitStat\Application\Query\Calculate\ProfitStatsViewAssembler;
 use SFL\Booking\ProfitStat\Application\Query\Maximize\GetMaximizedProfitStats;
 use SFL\Booking\ProfitStat\Application\Query\Maximize\GetMaximizedProfitStatsHandler;
 use SFL\Booking\ProfitStat\Application\Query\Maximize\MaximizedProfitStatsView;
@@ -24,9 +23,7 @@ final class GetMaximizedProfitStatsHandlerTest extends UnitTestCase
     {
         $this->profitStatsCalculator = $this->createMock(MaximizedProfitStatsCalculator::class);
         $this->handler = new GetMaximizedProfitStatsHandler(
-            assembler: new MaximizedProfitStatsViewAssembler(
-                profitStatsViewAssembler: new ProfitStatsViewAssembler(),
-            ),
+            assembler: new MaximizedProfitStatsViewAssembler(),
             maximizedProfitStatsCalculator: $this->profitStatsCalculator,
         );
         parent::setUp();
