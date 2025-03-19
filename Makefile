@@ -50,4 +50,7 @@ ps:
 
 restart: stop start
 
+test:
+	docker compose exec php /bin/bash -c "cd /var/www/html && php -d memory_limit=1G vendor/bin/phpunit"
+
 .DEFAULT_GOAL := help
