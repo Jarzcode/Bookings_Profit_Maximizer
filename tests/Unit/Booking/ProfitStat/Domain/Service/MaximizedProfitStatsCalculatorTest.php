@@ -32,6 +32,8 @@ final class MaximizedProfitStatsCalculatorTest extends UnitTestCase
         );
     }
 
+    //TODO: Add some tests to check that fails when it should (avoid only testing the happy path)
+
     /** @dataProvider bookingsDataProvider */
     public function test_it_should_calculate_the_best_profit(array $bookings, array $expected): void
     {
@@ -48,6 +50,53 @@ final class MaximizedProfitStatsCalculatorTest extends UnitTestCase
     public function bookingsDataProvider(): array
     {
         return [
+            'one booking' => [
+                [
+                    BookingMother::create(
+                        requestId: RequestIdMother::create("A"),
+                        checkIn: CheckInDateMother::create(new DateTimeImmutable("2030-01-01")),
+                        nights: NightsMother::create(10),
+                        sellingRate: SellingRateMother::create(1000),
+                        margin: MarginMother::create(10),
+                    ),
+                ],
+                [
+                    'requestIds' => [RequestIdMother::create("A")],
+                    'profitStat' => ProfitStat::create(
+                        AverageMother::create(10),
+                        MinProfitMother::create(10),
+                        MaxProfitMother::create(10),
+                        TotalProfitMother::create(100),
+                    ),
+                ],
+            ],
+            'two bookings' => [
+                [
+                    BookingMother::create(
+                        requestId: RequestIdMother::create("A"),
+                        checkIn: CheckInDateMother::create(new DateTimeImmutable("2030-01-01")),
+                        nights: NightsMother::create(10),
+                        sellingRate: SellingRateMother::create(1000),
+                        margin: MarginMother::create(10),
+                    ),
+                    BookingMother::create(
+                        requestId: RequestIdMother::create("B"),
+                        checkIn: CheckInDateMother::create(new DateTimeImmutable("2030-01-06")),
+                        nights: NightsMother::create(10),
+                        sellingRate: SellingRateMother::create(700),
+                        margin: MarginMother::create(10),
+                    ),
+                ],
+                [
+                    'requestIds' => [RequestIdMother::create("A")],
+                    'profitStat' => ProfitStat::create(
+                        AverageMother::create(10),
+                        MinProfitMother::create(10),
+                        MaxProfitMother::create(10),
+                        TotalProfitMother::create(100),
+                    ),
+                ],
+            ],
             'three bookings' => [
                 [
                     BookingMother::create(

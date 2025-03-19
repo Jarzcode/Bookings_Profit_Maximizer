@@ -30,9 +30,17 @@ class MaximizedProfitStatsCalculator
     /** @param list<Booking> $bookings */
     public function invoke(array $bookings): array
     {
+        $singleNodeProfits = $this->getSingleNodeProfits($bookings);
+
         $graph = $this->buildGraph($bookings);
 
         list($bestCombination, $totalProfit) = $this->graphPathFinder->invoke($graph);
+
+        list($bestCombination, $totalProfit) = $this->compareWithSingleBookings(
+            $singleNodeProfits,
+            $totalProfit,
+            $bestCombination,
+        );
 
         return $this->buildStats($bestCombination, $bookings, $totalProfit);
     }
@@ -86,15 +94,6 @@ class MaximizedProfitStatsCalculator
      */
     public function buildStats(array $bestCombination, array $bookings, float $totalProfit): array
     {
-        if (empty($bestCombination)) {
-            return [[], ProfitStat::create(
-                Average::fromFloat(0),
-                MinProfit::fromFloat(0),
-                MaxProfit::fromFloat(0),
-                TotalProfit::fromFloat(0),
-            )];
-        }
-
         $profitsPerNight = [];
         foreach ($bestCombination as $id) {
             $selectedBooking = null;
@@ -113,7 +112,21 @@ class MaximizedProfitStatsCalculator
 
             $nights = $selectedBooking->nights()->value();
             $profit = $this->calculateProfit($selectedBooking);
+
+            if ($nights === 0) {
+                continue;
+            }
+
             $profitsPerNight[] = $profit / $nights;
+        }
+
+        if (empty($profitsPerNight)) {
+            return [[], ProfitStat::create(
+                Average::fromFloat(0),
+                MinProfit::fromFloat(0),
+                MaxProfit::fromFloat(0),
+                TotalProfit::fromFloat(0),
+            )];
         }
 
         $avgNight = array_sum($profitsPerNight) / count($profitsPerNight);
@@ -132,5 +145,41 @@ class MaximizedProfitStatsCalculator
                 TotalProfit::fromFloat($totalProfit),
             ),
         ];
+    }
+
+    /**
+     * @param list<Booking> $bookings
+     * @return array<string, float>
+     */
+    private function getSingleNodeProfits(array $bookings): array
+    {
+        $singleNodeProfits = [];
+
+        foreach ($bookings as $booking) {
+            $singleNodeProfits[$booking->requestId()->value()] = self::calculateProfit($booking);
+        }
+
+        return $singleNodeProfits;
+    }
+
+    /**
+     * @param list<string, float> $singleNodeProfits
+     * @param list<array<array-key, int|float>> $bestCombination
+     *
+     * @return array<list<string>,float>
+     */
+    private function compareWithSingleBookings(
+        array $singleNodeProfits,
+        float $totalProfit,
+        array $bestCombination,
+    ): array {
+        foreach ($singleNodeProfits as $id => $profit) {
+            if ($totalProfit < $profit) {
+                $bestCombination = [$id];
+                $totalProfit = $profit;
+            }
+        }
+
+        return [$bestCombination, $totalProfit];
     }
 }
