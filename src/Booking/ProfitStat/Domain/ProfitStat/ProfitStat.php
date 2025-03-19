@@ -12,18 +12,22 @@ final class ProfitStat extends AggregateRoot
         private readonly Average $average,
         private readonly MinProfit $minProfit,
         private readonly MaxProfit $maxProfit,
+        private readonly ?TotalProfit $totalProfit,
+
     ) {
     }
 
     public static function create(
         Average $average,
         MinProfit $minProfit,
-        MaxProfit $maxProfit
+        MaxProfit $maxProfit,
+        ?TotalProfit $totalProfit = null
     ): self {
         return new self(
             $average,
             $minProfit,
-            $maxProfit
+            $maxProfit,
+            $totalProfit,
         );
     }
 
@@ -40,5 +44,10 @@ final class ProfitStat extends AggregateRoot
     public function maxProfit(): MaxProfit
     {
         return $this->maxProfit;
+    }
+
+    public function totalProfit(): ?TotalProfit
+    {
+        return $this->totalProfit;
     }
 }

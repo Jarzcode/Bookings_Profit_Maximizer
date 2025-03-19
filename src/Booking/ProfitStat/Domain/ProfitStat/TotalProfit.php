@@ -6,7 +6,7 @@ namespace SFL\Booking\ProfitStat\Domain\ProfitStat;
 
 use SFL\Shared\Domain\ValueObject\FloatValueObject;
 
-final class MinProfit extends FloatValueObject
+final class TotalProfit extends FloatValueObject
 {
     public function __construct(float $value)
     {

@@ -30,7 +30,7 @@ class ProfitStatsCalculator
         $minProfit = MinProfit::fromFloat($minProfit);
         $maxProfit = MaxProfit::fromFloat($maxProfit);
 
-        return new ProfitStat($average, $minProfit, $maxProfit);
+        return ProfitStat::create($average, $minProfit, $maxProfit);
     }
 
     /**

@@ -19,11 +19,4 @@ final class Average extends FloatValueObject
     {
         return new self($value);
     }
-
-    private function ensureIsPositive(float $value): void
-    {
-        if ($value < 0) {
-            throw new InvalidArgumentException("Average must be positive");
-        }
-    }
 }
