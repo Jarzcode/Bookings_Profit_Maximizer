@@ -57,6 +57,7 @@ final class HighestProfitGraphPathFinder
             $maxNode = $prev[$maxNode];
         }
 
+        //TODO: In case there is no path, I should return the more profitable isolated node
         return [array_reverse($bestPath), $maxProfit];
     }
 }

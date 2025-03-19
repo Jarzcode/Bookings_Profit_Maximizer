@@ -13,6 +13,13 @@ use SFL\Booking\ProfitStat\Domain\ProfitStat\MinProfit;
 use SFL\Booking\ProfitStat\Domain\ProfitStat\ProfitStat;
 use SFL\Booking\ProfitStat\Domain\ProfitStat\TotalProfit;
 
+/**
+ * To achieve the goal of getting the maximum profit between several bookings,
+ * I've chosen to use a graph to represent the compatibility between bookings.
+ * Every node in the graph is a booking, and the edge represents the compatibility between two bookings.
+ *
+ * To find the best combination of bookings, I've used the Dijkstra algorithm to find the path with the highest profit.
+ */
 class MaximizedProfitStatsCalculator
 {
     public function __construct(
@@ -23,55 +30,11 @@ class MaximizedProfitStatsCalculator
     /** @param list<Booking> $bookings */
     public function invoke(array $bookings): array
     {
-        // Step 1: Build the graph from the bookings
         $graph = $this->buildGraph($bookings);
 
-        // Step 2: Apply Dijkstra's algorithm (inverse) to find the path with the maximum profit
         list($bestCombination, $totalProfit) = $this->graphPathFinder->invoke($graph);
 
-        /*return [
-            array_map(
-                static fn(string $id) => RequestId::fromString($id),
-                array_reverse($bestCombination),
-            ),
-            $totalProfit,
-        ];*/
-
-        // Step 3: Calculate average, min, and max profit per night
-        $profitsPerNight = [];
-        foreach ($bestCombination as $id) {
-            $selectedBooking = null;
-
-            /** @var Booking $selectedBooking */
-            $selectedBooking = current(
-                array_filter(
-                    $bookings,
-                    fn($booking) => $booking->requestId()->value() === $id
-                )
-            );
-
-            $nights = $selectedBooking->nights()->value();
-            $profit = $this->calculateProfit($selectedBooking);
-            $profitsPerNight[] = $profit / $nights;
-        }
-
-        $avgNight = array_sum($profitsPerNight) / count($profitsPerNight);
-        $minNight = min($profitsPerNight);
-        $maxNight = max($profitsPerNight);
-
-        // Step 4: Return result
-        return [
-            array_map(
-                static fn(string $id) => RequestId::fromString($id),
-                $bestCombination,
-            ),
-            ProfitStat::create(
-                Average::fromFloat($avgNight),
-                MinProfit::fromFloat($minNight),
-                MaxProfit::fromFloat($maxNight),
-                TotalProfit::fromFloat($totalProfit),
-            ),
-        ];
+        return $this->buildStats($bestCombination, $bookings, $totalProfit);
     }
 
     /** @param list<Booking> $bookings */
@@ -114,5 +77,60 @@ class MaximizedProfitStatsCalculator
     public static function calculateProfit(Booking $booking): int|float
     {
         return ($booking->sellingRate()->value() * ($booking->margin()->value() / 100));
+    }
+
+    /**
+     * @param list<string> $bestCombination
+     * @param list<Booking> $bookings
+     * @return array{list<RequestId>, ProfitStat}
+     */
+    public function buildStats(array $bestCombination, array $bookings, float $totalProfit): array
+    {
+        if (empty($bestCombination)) {
+            return [[], ProfitStat::create(
+                Average::fromFloat(0),
+                MinProfit::fromFloat(0),
+                MaxProfit::fromFloat(0),
+                TotalProfit::fromFloat(0),
+            )];
+        }
+
+        $profitsPerNight = [];
+        foreach ($bestCombination as $id) {
+            $selectedBooking = null;
+
+            /** @var Booking $selectedBooking */
+            $selectedBooking = current(
+                array_filter(
+                    $bookings,
+                    fn($booking) => $booking->requestId()->value() === $id
+                )
+            );
+
+            if ($selectedBooking === false) {
+                continue;
+            }
+
+            $nights = $selectedBooking->nights()->value();
+            $profit = $this->calculateProfit($selectedBooking);
+            $profitsPerNight[] = $profit / $nights;
+        }
+
+        $avgNight = array_sum($profitsPerNight) / count($profitsPerNight);
+        $minNight = min($profitsPerNight);
+        $maxNight = max($profitsPerNight);
+
+        return [
+            array_map(
+                static fn(string $id) => RequestId::fromString($id),
+                $bestCombination,
+            ),
+            ProfitStat::create(
+                Average::fromFloat($avgNight),
+                MinProfit::fromFloat($minNight),
+                MaxProfit::fromFloat($maxNight),
+                TotalProfit::fromFloat($totalProfit),
+            ),
+        ];
     }
 }
