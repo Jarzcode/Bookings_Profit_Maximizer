@@ -26,11 +26,11 @@ final class BookingDto
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['request_id'],
-            $data['check_in'],
-            $data['nights'],
-            $data['selling_rate'],
-            $data['margin']
+            requestId: $data['request_id'],
+            checkIn: $data['check_in'],
+            nights: $data['nights'],
+            sellingRate: $data['selling_rate'],
+            margin: $data['margin']
         );
     }
 }
