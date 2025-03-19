@@ -39,8 +39,6 @@ stop:
 setup:
 	docker compose exec php composer clearcache
 	docker compose exec php composer install --no-scripts
-	docker compose exec php /bin/bash -c "cd /var/www/html && php bin/console doctrine:migrations:migrate --no-interaction -q"
-	docker compose exec php /bin/bash -c "cd /var/www/html && php bin/console doctrine:schema:validate"
 
 symfony-cache-clear:
 	docker compose exec php /bin/bash -c "cd /var/www/html && php -d memory_limit=1G bin/console cache:clear"
