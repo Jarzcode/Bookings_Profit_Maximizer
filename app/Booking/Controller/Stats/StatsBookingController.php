@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Booking\Controller\Stats;
 
 use App\Booking\Exception\MissingFieldException;
+use Exception;
 use SFL\Booking\ProfitStat\Application\Query\Dto\BookingDto;
 use SFL\Booking\ProfitStat\Application\Query\Calculate\GetCalculatedProfitStats;
 use SFL\Shared\Infrastructure\Symfony\Controller\ApiController;
@@ -26,6 +27,7 @@ final class StatsBookingController extends ApiController
     {
         self::validateHasAllMandatoryFields($request);
 
+        try {
         $statsView = $this->ask(
             new GetCalculatedProfitStats(
                 $this->requestDataToDtosList($request),
@@ -33,6 +35,9 @@ final class StatsBookingController extends ApiController
         );
 
         return new JsonResponse($statsView);
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     protected function exceptions(): array
