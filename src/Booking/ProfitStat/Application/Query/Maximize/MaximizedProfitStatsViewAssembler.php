@@ -17,7 +17,7 @@ final class MaximizedProfitStatsViewAssembler
                 static fn(RequestId $requestId): string => $requestId->value(),
                 $requestIds,
             ),
-            totalProfit: $profitStat->totalProfit()->value(),
+            totalProfit: $profitStat->totalProfit()?->value(),
             avg_night: $profitStat->average()->value(),
             min_night: $profitStat->minProfit()->value(),
             max_night: $profitStat->maxProfit()->value(),
