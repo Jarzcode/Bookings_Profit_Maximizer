@@ -30,17 +30,9 @@ class MaximizedProfitStatsCalculator
     /** @param list<Booking> $bookings */
     public function invoke(array $bookings): array
     {
-        $singleNodeProfits = $this->getSingleNodeProfits($bookings);
-
         $graph = $this->buildGraph($bookings);
 
         list($bestCombination, $totalProfit) = $this->graphPathFinder->invoke($graph);
-
-        list($bestCombination, $totalProfit) = $this->compareWithSingleBookings(
-            $singleNodeProfits,
-            $totalProfit,
-            $bestCombination,
-        );
 
         return $this->buildStats($bestCombination, $bookings, $totalProfit);
     }
@@ -55,11 +47,11 @@ class MaximizedProfitStatsCalculator
         for ($i = 0; $i < $n; $i++) {
             $booking = $bookings[$i];
             $requestIdA = $booking->requestId()->value();
-            $graph[] = [];
 
             $graph[$requestIdA] = [];
             for ($j = 0; $j < $n; $j++) {
                 if ($i === $j) {
+                    $graph[$requestIdA][$requestIdA] = $this->calculateProfit($booking);
                     continue;
                 }
 
@@ -75,10 +67,11 @@ class MaximizedProfitStatsCalculator
 
                 if ( $booking1Duration <= $bookingB->checkIn()->value() ) {
                     $graph[$requestIdA][$requestIdB] =
-                        $this->calculateProfit($bookingA) + $this->calculateProfit($bookingB);
+                        $this->calculateProfit($bookingB);
                 }
             }
         }
+
         return $graph;
     }
 
