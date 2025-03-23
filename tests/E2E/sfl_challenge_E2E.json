@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "cadd434c-99d9-4328-9f61-1a0f2d731013",
+		"name": "E2E",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25589349"
+	},
+	"item": [
+		{
+			"name": "Calculate stats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<style type=\"text/css\">",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+							"    .tftable tr {background-color:#ffffff;}",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+							"    .tftable tr:hover {background-color:#e0ffff;}",
+							"</style>",
+							"",
+							"<table class=\"tftable\" border=\"1\">",
+							"    <tr>",
+							"        <th>Statistic</th>",
+							"        <th>Value</th>",
+							"    </tr>",
+							"    <tr>",
+							"        <td>Average Night</td>",
+							"        <td>{{response.avg_night}}</td>",
+							"    </tr>",
+							"    <tr>",
+							"        <td>Minimum Night</td>",
+							"        <td>{{response.min_night}}</td>",
+							"    </tr>",
+							"    <tr>",
+							"        <td>Maximum Night</td>",
+							"        <td>{{response.max_night}}</td>",
+							"    </tr>",
+							"</table>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    return {response: pm.response.json()}",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());",
+							"// Test for response schema validation",
+							"pm.test(\"Response has the expected schema\", function () {",
+							"    var schema = {",
+							"        type: \"object\",",
+							"        properties: {",
+							"            avg_night: { type: \"number\" },",
+							"            min_night: { type: \"number\" },",
+							"            max_night: { type: \"number\" }",
+							"        },",
+							"        required: [\"avg_night\", \"min_night\", \"max_night\"]",
+							"    };",
+							"",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"});",
+							"pm.test(\"Each statistic value in the response matches the provided data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData.avg_night).to.equal(8.29);",
+							"    pm.expect(jsonData.min_night).to.equal(8);",
+							"    pm.expect(jsonData.max_night).to.equal(8.58);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"request_id\":\"bookata_XY123\",\n        \"check_in\":\"2030-01-01\",\n        \"nights\":5,\n        \"selling_rate\":200,\n        \"margin\":20\n    },\n    {\n        \"request_id\":\"kayete_PP234\",\n        \"check_in\":\"2030-01-04\",\n        \"nights\":4,\n        \"selling_rate\":156,\n        \"margin\":22\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://nginx/booking/stats",
+					"host": [
+						"http://nginx/booking"
+					],
+					"path": [
+						"stats"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -25,6 +25,18 @@ services:
     networks:
       - sfl_network
 
+  newman:
+    image: postman/newman:alpine
+    container_name: sfl_e2e_tests
+    volumes:
+      - ./tests/E2E:/etc/newman
+    networks:
+      - sfl_network
+    depends_on:
+      - nginx
+      - php
+    entrypoint: [ "/bin/sh", "-c", "newman run /etc/newman/sfl_challenge_E2E.json" ]
+
 networks:
   sfl_network:
     driver: bridge
