@@ -1,6 +1,6 @@
 # 🏨 Maximized Profit Stats Application
 
-This is the StayForLong's challenge: the Maximized Profit Stats Application! This project is designed to help you calculate the best possible profit stats for your bookings.
+This project is designed to help you calculate the best possible profit stats for your bookings.
 It's built with PHP (Symfony framework) and uses Composer for dependency management.
 The API lives in a Docker container and is ready to go with a simple `make` command.
 
